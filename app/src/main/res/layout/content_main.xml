@@ -43,19 +43,19 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <RadioButton
-            android:id="@+id/glide"
+            android:id="@+id/radio_button_glide"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/label_option_glide" />
 
         <RadioButton
-            android:id="@+id/loadapp"
+            android:id="@+id/radio_button_loadapp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/label_option_loadapp" />
 
         <RadioButton
-            android:id="@+id/retrofit"
+            android:id="@+id/radio_button_retrofit"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/label_option_retrofit" />
