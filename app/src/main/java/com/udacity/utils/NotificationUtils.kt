@@ -16,6 +16,7 @@
 
 package com.udacity.utils
 
+import android.app.DownloadManager
 import android.app.NotificationManager
 import android.app.PendingIntent
 import android.content.Context
@@ -25,8 +26,6 @@ import androidx.core.app.NotificationCompat
 import com.udacity.DetailActivity
 import com.udacity.R
 
-// Notification ID.
-private val NOTIFICATION_ID = 0
 private val REQUEST_CODE = 0
 private val FLAGS = PendingIntent.FLAG_ONE_SHOT
 
@@ -35,10 +34,11 @@ private val FLAGS = PendingIntent.FLAG_ONE_SHOT
  *
  * @param context, activity context.
  */
-fun NotificationManager.sendNotification(applicationContext: Context) {
+fun NotificationManager.sendNotification(applicationContext: Context, downloadId: Long) {
     // Create the content intent for the notification, which launches
     // this activity
     val contentIntent = Intent(applicationContext, DetailActivity::class.java)
+    contentIntent.putExtra(DownloadManager.EXTRA_NOTIFICATION_CLICK_DOWNLOAD_IDS, downloadId)
 
     val contentPendingIntentFlags = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
         PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT
@@ -49,12 +49,13 @@ fun NotificationManager.sendNotification(applicationContext: Context) {
     val contentPendingIntent =
         PendingIntent.getActivity(
             applicationContext,
-            NOTIFICATION_ID,
+            downloadId.toInt(),
             contentIntent,
             contentPendingIntentFlags
         )
 
     val detailIntent = Intent(applicationContext, DetailActivity::class.java)
+    detailIntent.putExtra(DownloadManager.EXTRA_NOTIFICATION_CLICK_DOWNLOAD_IDS, downloadId)
     val detailPendingIntent: PendingIntent = PendingIntent.getActivity(
         applicationContext,
         REQUEST_CODE,
@@ -80,7 +81,7 @@ fun NotificationManager.sendNotification(applicationContext: Context) {
         )
         .setPriority(NotificationCompat.PRIORITY_HIGH)
 
-    notify(NOTIFICATION_ID, builder.build())
+    notify(downloadId.toInt(), builder.build())
 }
 
 fun NotificationManager.cancelNotifications() {

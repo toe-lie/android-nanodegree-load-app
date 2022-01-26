@@ -23,4 +23,10 @@
     <string name="button_text_loading">We are loading</string>
     <string name="toast_message_required_to_select_file">Please select the file to download</string>
     <string name="toast_message_invalid_url">Invalid download url</string>
+
+    <!-- String resources used in Detail screen -->
+    <string name="label_file_name">File name :</string>
+    <string name="label_download_status">Status :</string>
+    <string name="label_status_success">Success</string>
+    <string name="label_status_fail">Fail</string>
 </resources>
