@@ -10,15 +10,20 @@ import android.graphics.Color
 import android.graphics.Paint
 import android.text.TextPaint
 import android.util.AttributeSet
+import android.util.Log
 import android.view.View
 import androidx.annotation.StringRes
 import androidx.core.content.ContextCompat
+import androidx.core.content.withStyledAttributes
 import com.udacity.utils.dp
 import com.udacity.utils.sp
 import kotlin.properties.Delegates
 
 private const val PROPERTY_PROGRESS = "progress"
 private const val PROPERTY_DEGREE = "degree"
+private val PROGRESS_COLOR = Color.parseColor("#5C000000") // 36% Black
+private val DEFAULT_BACKGROUND_COLOR = Color.GREEN
+private val DEFAULT_TEXT_COLOR = Color.WHITE
 
 class LoadingButton @JvmOverloads constructor(
     context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
@@ -68,7 +73,9 @@ class LoadingButton @JvmOverloads constructor(
             }
 
             override fun onAnimationEnd(animation: Animator?) {
-                setState(ButtonState.Completed)
+                post {
+                    setState(ButtonState.Completed)
+                }
             }
         })
         animator.start()
@@ -102,9 +109,11 @@ class LoadingButton @JvmOverloads constructor(
     }
 
     init {
-        progressPaint.color = ContextCompat.getColor(context, R.color.colorPrimaryDark)
-        backgroundPaint.color = ContextCompat.getColor(context, R.color.colorPrimary)
-        textPaint.color = ContextCompat.getColor(context, R.color.white)
+        progressPaint.color = PROGRESS_COLOR
+        context.withStyledAttributes(attrs, R.styleable.LoadingButton) {
+            backgroundPaint.color = getColor(R.styleable.LoadingButton_lb_background, DEFAULT_BACKGROUND_COLOR)
+            textPaint.color = getColor(R.styleable.LoadingButton_lb_textColor, DEFAULT_TEXT_COLOR)
+        }
     }
 
     override fun onDraw(canvas: Canvas) {
@@ -127,7 +136,16 @@ class LoadingButton @JvmOverloads constructor(
             val circleRight = circleLeft + circleSize
             val circleTop = textY - (circleSize / 2)
             val circleBottom = textY + (circleSize / 2)
-            canvas.drawArc(circleLeft, circleTop, circleRight, circleBottom, 0f, degree.toFloat(), true, circlePaint)
+            canvas.drawArc(
+                circleLeft,
+                circleTop,
+                circleRight,
+                circleBottom,
+                0f,
+                degree.toFloat(),
+                true,
+                circlePaint
+            )
         }
 
         canvas.drawText(text, textX, textY, textPaint)
