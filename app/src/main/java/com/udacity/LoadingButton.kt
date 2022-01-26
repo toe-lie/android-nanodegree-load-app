@@ -12,11 +12,13 @@ import android.text.TextPaint
 import android.util.AttributeSet
 import android.util.Log
 import android.view.View
+import android.widget.Toast
 import androidx.annotation.StringRes
 import androidx.core.content.ContextCompat
 import androidx.core.content.withStyledAttributes
 import com.udacity.utils.dp
 import com.udacity.utils.sp
+import kotlinx.android.synthetic.main.content_main.*
 import kotlin.properties.Delegates
 
 private const val PROPERTY_PROGRESS = "progress"
@@ -38,7 +40,7 @@ class LoadingButton @JvmOverloads constructor(
     private val propertyDegree = PropertyValuesHolder.ofInt(PROPERTY_DEGREE, 0, 360)
     private val animator = ValueAnimator()
 
-    private var buttonState: ButtonState by Delegates.observable<ButtonState>(ButtonState.Completed) { p, old, new ->
+    var buttonState: ButtonState by Delegates.observable<ButtonState>(ButtonState.Completed) { p, old, new ->
         if (old == new) return@observable
 
         val textResId = when (new) {
@@ -150,7 +152,7 @@ class LoadingButton @JvmOverloads constructor(
 
         canvas.drawText(text, textX, textY, textPaint)
     }
-
+    
     override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
         val minw: Int = paddingLeft + paddingRight + suggestedMinimumWidth
         val w: Int = resolveSizeAndState(minw, widthMeasureSpec, 1)

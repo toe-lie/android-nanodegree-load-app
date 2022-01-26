@@ -31,8 +31,10 @@ class MainActivity : AppCompatActivity() {
         registerReceiver(receiver, IntentFilter(DownloadManager.ACTION_DOWNLOAD_COMPLETE))
 
         custom_button.setOnClickListener {
-            custom_button.setState(ButtonState.Clicked)
-            // download()
+            if (custom_button.buttonState != ButtonState.Loading) {
+                markDownloadButtonStateAsClicked()
+                download()
+            }
         }
     }
 
@@ -40,6 +42,10 @@ class MainActivity : AppCompatActivity() {
         override fun onReceive(context: Context?, intent: Intent?) {
             val id = intent?.getLongExtra(DownloadManager.EXTRA_DOWNLOAD_ID, -1)
         }
+    }
+
+    private fun markDownloadButtonStateAsClicked() {
+        custom_button.setState(ButtonState.Clicked)
     }
 
     private fun download() {
